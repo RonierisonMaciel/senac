@@ -1,6 +1,6 @@
 -- Aula 1: Criação de Tabelas e Definição de Relacionamentos
-CREATE DATABASE IF NOT EXISTS aula_mysql;
-USE aula_mysql;
+CREATE DATABASE IF NOT EXISTS db-1;
+USE db-1;
 
 CREATE TABLE departamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
