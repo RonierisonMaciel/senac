@@ -1,6 +1,6 @@
 # Estrutura do repositório
 
-Este repositório contém materiais e scripts relacionados às disciplinas de Análise e Projeto de Sistemas (APS) e Banco de Dados. A estrutura do repositório é organizada de forma a facilitar a localização de materiais, scripts e termos específicos para cada disciplina.
+Este repositório contém materiais e scripts relacionados às disciplinas de Análise e Projeto de Sistemas (APS), Banco de Dados e Python. A estrutura do repositório é organizada de forma a facilitar a localização de materiais, scripts e termos específicos para cada disciplina.
 
 ## Estrutura do diretório
 
@@ -23,24 +23,34 @@ A estrutura do repositório é a seguinte:
 |       |-- material/
 |       |-- script/
 |       |-- termos.md
+|
+|-- Python/
+|   |-- material/
+|   |-- script/
+|   |-- termos.md
 ```
 
 ### Descrição dos diretórios
 
 1. **APS (Análise e Projeto de Sistemas)**
-   - **material**: Diretório contendo slides, documentos, e outros recursos didáticos utilizados na disciplina de Análise e Projeto de Sistemas.
+   - **material**: Diretório contendo slides, documentos e outros recursos didáticos utilizados na disciplina de Análise e Projeto de Sistemas.
    - **script**: Diretório contendo scripts e exemplos de código que complementam o material da disciplina.
    - **termos.md**: Arquivo com a lista de termos e conceitos importantes específicos para Análise e Projeto de Sistemas.
 
 2. **DB (Banco de Dados)**
    - **Banco de dados I**
-     - **material**: Diretório contendo slides, documentos, e outros recursos didáticos utilizados na disciplina de Banco de Dados I.
+     - **material**: Diretório contendo slides, documentos e outros recursos didáticos utilizados na disciplina de Banco de Dados I.
      - **script**: Diretório contendo scripts SQL e exemplos de código que complementam o material da disciplina de Banco de Dados I.
      - **termos.md**: Arquivo com a lista de termos e conceitos importantes específicos para Banco de Dados I.
    - **Banco de dados II**
-     - **material**: Diretório contendo slides, documentos, e outros recursos didáticos utilizados na disciplina de Banco de Dados II.
+     - **material**: Diretório contendo slides, documentos e outros recursos didáticos utilizados na disciplina de Banco de Dados II.
      - **script**: Diretório contendo scripts SQL e exemplos de código que complementam o material da disciplina de Banco de Dados II.
      - **termos.md**: Arquivo com a lista de termos e conceitos importantes específicos para Banco de Dados II.
+
+3. **Python**
+   - **material**: Diretório contendo slides, documentos e outros recursos didáticos utilizados na disciplina de Python.
+   - **script**: Diretório contendo scripts e exemplos de código que complementam o material da disciplina de Python.
+   - **termos.md**: Arquivo com a lista de termos e conceitos importantes específicos para Python.
 
 ## Termos principais
 
@@ -65,9 +75,12 @@ Cada `termos.md` dentro dos diretórios pode ser estruturado da seguinte maneira
 - **Normalização**: Processo de organizar os dados em um banco de dados para reduzir a redundância e melhorar a integridade dos dados.
 - **Índice (Index)**: Estrutura de dados que melhora a velocidade de recuperação de registros em uma tabela de banco de dados.
 
+## Python
+- **print()**: Função utilizada para imprimir mensagens ou variáveis na saída padrão.
+- **Lista**: Estrutura de dados que armazena uma sequência de elementos, permitindo duplicatas e diferentes tipos de dados.
 ```
 
-## Como Contribuir
+## Como contribuir
 
 Se desejar contribuir com este repositório, siga estas etapas:
 
