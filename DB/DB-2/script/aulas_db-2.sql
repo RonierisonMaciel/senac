@@ -17,7 +17,7 @@ CREATE TABLE cursos(
     descri_curso VARCHAR(100),
     professor VARCHAR(100),
     id_aluno INT,
-    foreign key (id_alunos) references alunos (id)
+    foreign key (id_aluno) references alunos (id)
 );
 
 insert into alunos (nome, data_nascimento, email, cpf) values 
