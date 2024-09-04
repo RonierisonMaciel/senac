@@ -27,8 +27,10 @@ insert into alunos (nome, data_nascimento, email, cpf) values
 ("Josefá Silva", '1945-03-10', "josefa@gmail.com", "025.154.874-60");
 
 insert into cursos (nome_curso, data_criacao, descri_curso, professor, id_aluno) values 
-('Análise e Desenvolimento de Sistemas', '2024-07-08', 'curso onoonoono', 'Johnatan Silva', 1), ('', '', '', '', 2),
-('Sistemas de Informação', '2024-07-08', 'curso onoonoono', 'Fábio Oliveira', 3), ('', '', '', '', 3);
+('Análise e Desenvolimento de Sistemas', '2024-07-08', 'curso onoonoono', 'Johnatan Silva', 1), 
+('Ciência da Computação', '2024-07-05', 'curso onoonoono', 'Bernadete Maciel', 2),
+('Sistemas de Informação', '2024-07-08', 'curso onoonoono', 'Fábio Oliveira', 3), 
+('Engenharia de Software', '2025-05-07', 'curso onoonoono', 'Elizabete Duque', 4);
 
 # -----------------------------------------------
 
