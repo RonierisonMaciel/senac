@@ -1,3 +1,37 @@
+CREATE DATABASE `banco_3`;
+
+USE banco_3;
+
+CREATE TABLE alunos(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_nascimento date,
+    email VARCHAR(80),
+    cpf VARCHAR(80)
+);
+
+CREATE TABLE cursos(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_curso VARCHAR(100),
+    data_criacao date,
+    descri_curso VARCHAR(100),
+    professor VARCHAR(100),
+    id_aluno INT,
+    foreign key (id_alunos) references alunos (id)
+);
+
+insert into alunos (nome, data_nascimento, email, cpf) values 
+("Carlos Alberto", '2024-08-08', "carlos.alberto@gmail.com", "088.452.467-51"), 
+("André Veloso", '1989-01-01', "veloso@gmail.com", "088.058.487-50"), 
+("Maria Oliveira", '2001-07-01', "maria.oliveira@gmail.com", "010.222.427-40"),
+("Josefá Silva", '1945-03-10', "josefa@gmail.com", "025.154.874-60");
+
+insert into cursos (nome_curso, data_criacao, descri_curso, professor, id_aluno) values 
+('Análise e Desenvolimento de Sistemas', '2024-07-08', 'curso onoonoono', 'Johnatan Silva', 1), ('', '', '', '', 2),
+('Sistemas de Informação', '2024-07-08', 'curso onoonoono', 'Fábio Oliveira', 3), ('', '', '', '', 3);
+
+# -----------------------------------------------
+
 CREATE DATABASE IF NOT EXISTS banco_de_dados;
 USE banco_de_dados;
 
