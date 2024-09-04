@@ -1,29 +1,109 @@
+CREATE DATABASE IF NOT EXISTS banco_de_dados;
+USE banco_de_dados;
 
--- Criação do Banco de Dados (Caso ainda não exista)
-CREATE DATABASE escola;
-
--- Selecionar o Banco de Dados
-USE escola;
-
--- Criação da Tabela alunos (Caso ainda não exista)
-CREATE TABLE IF NOT EXISTS alunos (
-    id INT PRIMARY KEY,
+CREATE TABLE Clientes (
+    cliente_id INT PRIMARY KEY,
     nome VARCHAR(100),
-    data_nascimento DATE,
-    curso_id INT
+    endereco VARCHAR(255),
+    telefone VARCHAR(20)
 );
 
--- Criação da Tabela cursos (Caso ainda não exista)
-CREATE TABLE IF NOT EXISTS cursos (
-    curso_id INT PRIMARY KEY,
-    nome_curso VARCHAR(100)
+INSERT INTO Clientes (cliente_id, nome, endereco, telefone) VALUES (1, 'João Silva', 'Rua A, 123', '1234-5678');
+INSERT INTO Clientes (cliente_id, nome, endereco, telefone) VALUES (2, 'Maria Souza', 'Rua B, 456', '8765-4321');
+
+CREATE TABLE Pedidos (
+    pedido_id INT PRIMARY KEY,
+    cliente_id INT,
+    data_pedido DATE,
+    valor_total DECIMAL(10, 2),
+    FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id)
 );
 
--- Inserção de Dados na Tabela alunos
-INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (1, 'João Silva', '2001-05-20', 1);
-INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (2, 'Maria Oliveira', '2000-11-15', 2);
-INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (3, 'Carlos Mendes', '1999-12-10', NULL);
+INSERT INTO Pedidos (pedido_id, cliente_id, data_pedido, valor_total) VALUES (1, 1, '2024-08-28', 150.50);
+INSERT INTO Pedidos (pedido_id, cliente_id, data_pedido, valor_total) VALUES (2, 2, '2024-08-29', 200.75);
 
--- Inserção de Dados na Tabela cursos
-INSERT INTO cursos (curso_id, nome_curso) VALUES (1, 'Engenharia de Software');
-INSERT INTO cursos (curso_id, nome_curso) VALUES (2, 'Ciência da Computação');
+SELECT * FROM Clientes WHERE nome = ?;
+
+CREATE TABLE Produtos (
+    produto_id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    preco DECIMAL(10, 2),
+    categoria VARCHAR(50)
+);
+
+INSERT INTO Produtos (produto_id, nome, preco, categoria) VALUES (1, 'Notebook', 3500.00, 'Eletrônicos');
+INSERT INTO Produtos (produto_id, nome, preco, categoria) VALUES (2, 'Smartphone', 1500.00, 'Eletrônicos');
+INSERT INTO Produtos (produto_id, nome, preco, categoria) VALUES (3, 'Livro', 50.00, 'Literatura');
+
+SELECT * FROM Produtos WHERE categoria = ?;
+
+-- 1. Exemplo de uso de LIKE:
+SELECT * FROM Clientes WHERE endereco LIKE 'Rua%';
+
+-- 2. Exemplo de INNER JOIN:
+SELECT Clientes.nome, Pedidos.pedido_id, Pedidos.data_pedido
+FROM Clientes
+INNER JOIN Pedidos ON Clientes.cliente_id = Pedidos.cliente_id;
+
+-- 3. Exemplo de LEFT JOIN:
+SELECT Clientes.nome, Pedidos.pedido_id, Pedidos.data_pedido
+FROM Clientes
+LEFT JOIN Pedidos ON Clientes.cliente_id = Pedidos.cliente_id;
+
+-- 4. Exemplo de RIGHT JOIN:
+SELECT Clientes.nome, Pedidos.pedido_id, Pedidos.data_pedido
+FROM Clientes
+RIGHT JOIN Pedidos ON Clientes.cliente_id = Pedidos.cliente_id;
+
+-- 5. Exemplo de FULL JOIN:
+SELECT Clientes.nome, Pedidos.pedido_id, Pedidos.data_pedido
+FROM Clientes
+FULL JOIN Pedidos ON Clientes.cliente_id = Pedidos.cliente_id;
+
+-- 6. Exemplo de GROUP BY e HAVING:
+SELECT cliente_id, COUNT(pedido_id) AS total_pedidos, SUM(valor_total) AS total_valor
+FROM Pedidos
+GROUP BY cliente_id
+HAVING total_valor > 100;
+
+-- 7. Exemplo de uso de MAX:
+SELECT MAX(valor_total) AS maior_pedido FROM Pedidos;
+
+-- 8. Criação de uma VIEW:
+CREATE VIEW View_Clientes_Pedidos AS
+SELECT Clientes.cliente_id, Clientes.nome, Pedidos.pedido_id, Pedidos.data_pedido
+FROM Clientes
+INNER JOIN Pedidos ON Clientes.cliente_id = Pedidos.cliente_id;
+
+-- Usando a VIEW para consultas:
+SELECT * FROM View_Clientes_Pedidos;
+
+-- 9. Criação de tipos de dados usando CREATE TYPE:
+CREATE TYPE Endereco AS (
+    rua VARCHAR(100),
+    cidade VARCHAR(50),
+    estado VARCHAR(2),
+    cep VARCHAR(10)
+);
+
+CREATE TYPE Cliente AS (
+    cliente_id INT,
+    nome VARCHAR(100),
+    endereco Endereco,
+    telefone VARCHAR(20)
+);
+
+
+CREATE TABLE ClientesComEndereco (
+    cliente_info Cliente,
+    data_registro DATE
+);
+
+INSERT INTO ClientesComEndereco (cliente_info, data_registro)
+VALUES (
+    Cliente(1, 'João Silva', Endereco('Rua A', 'Recife', 'PE', '50000-000'), '1234-5678'),
+    '2024-08-28'
+);
+
+SELECT cliente_info.nome, cliente_info.endereco.cidade
+FROM ClientesComEndereco;
