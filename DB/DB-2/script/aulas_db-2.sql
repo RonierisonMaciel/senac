@@ -4,31 +4,45 @@ CREATE DATABASE escola;
 -- 2. Selecionar o Banco de Dados
 USE escola;
 
--- 3. Criação da Tabela alunos
-CREATE TABLE IF NOT EXISTS alunos (
-    id INT PRIMARY KEY NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    data_nascimento DATE NOT NULL,
-    curso_id INT,
-    FOREIGN KEY (curso_id) REFERENCES cursos(curso_id)
-);
-
 -- 3. Criação da Tabela cursos
 CREATE TABLE IF NOT EXISTS cursos (
     curso_id INT PRIMARY KEY,
     nome_curso VARCHAR(100)
 );
 
--- 4. Inserção de Dados na Tabela alunos
-INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (1, 'João Silva', '2001-05-20', 1);
-INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (2, 'Maria Oliveira', '2000-11-15', 2);
-INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (3, 'Carlos Mendes', '1999-12-10', 4);
+-- 3. Criação da Tabela alunos
+CREATE TABLE IF NOT EXISTS alunos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_nascimento DATE,
+    curso_id INT,
+    FOREIGN KEY (curso_id) REFERENCES cursos(curso_id)
+);
+
+CREATE TABLE IF NOT EXISTS alunos_b (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    data_nascimento DATE,
+    curso_id INT,
+    FOREIGN KEY (curso_id) REFERENCES cursos(curso_id)
+);
 
 -- 5. Inserção de Dados na Tabela cursos
 INSERT INTO cursos (curso_id, nome_curso) VALUES (1, 'Engenharia de Software');
 INSERT INTO cursos (curso_id, nome_curso) VALUES (2, 'Ciência da Computação');
 INSERT INTO cursos (curso_id, nome_curso) VALUES (3, 'Sistemas de Informação');
 INSERT INTO cursos (curso_id, nome_curso) VALUES (4, 'Análise e Desenvolvimento de Sistemas');
+
+-- 4. Inserção de Dados na Tabela alunos
+INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (1, 'João Silva', '2001-05-20', 1);
+INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (2, 'Maria Oliveira', '2000-11-15', 2);
+INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (3, 'Carlos Mendes', '1999-12-10', 4);
+INSERT INTO alunos (id, nome, data_nascimento, curso_id) VALUES (4, 'Joana Xavier', '1999-12-10', NULL);
+
+INSERT INTO alunos_b (id, nome, data_nascimento, curso_id) VALUES (1, 'Rogério Felix', '2001-05-20', 1);
+INSERT INTO alunos_b (id, nome, data_nascimento, curso_id) VALUES (2, 'Maria Luisa', '2000-11-15', 2);
+INSERT INTO alunos_b (id, nome, data_nascimento, curso_id) VALUES (3, 'Sabrina Feitosa', '1999-12-10', 4);
+INSERT INTO alunos_b (id, nome, data_nascimento, curso_id) VALUES (4, 'Juliana Oliveira', '1999-12-10', NULL);
 
 -- 6. Consultas com JOINs
 -- INNER JOIN: Listar todos os alunos e seus respectivos cursos
@@ -83,7 +97,7 @@ SELECT * FROM alunos WHERE data_nascimento > '2000-01-01';
 SELECT nome, data_nascimento FROM alunos;
 
 -- 18. Renomeação: Renomear a coluna nome para estudante_nome
-SELECT nome AS estudante_nome, data_nascimento FROM alunos;
+# SELECT nome AS estudante_nome, data_nascimento FROM alunos;
 
 -- 19. União: Combinação de registros de duas tabelas semelhantes
 SELECT nome, data_nascimento FROM alunos
@@ -110,6 +124,19 @@ SELECT nome FROM alunos WHERE (YEAR(CURDATE()) - YEAR(data_nascimento)) > 20;
 -- 24. Cálculo Relacional de Domínio: Alunos cujo curso é 'Engenharia de Software'
 SELECT nome FROM alunos WHERE curso_id = (SELECT curso_id FROM cursos WHERE nome_curso = 'Engenharia de Software');
 
+-- 25. Criação da Tabela Cliente
+CREATE TABLE Cliente (
+    cliente_id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    telefone VARCHAR(20)
+);
+
+INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (1, 'Roberta Miranda', '(81) 997765415');
+INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (2, 'André Rocha', '(81) 965540981');
+INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (3, 'Mannoel Filho', '(81) 965433218');
+INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (4, 'Carla Shutz', '(81) 987466216');
+
+
 -- 25. Índices
 CREATE INDEX idx_cliente_nome ON Cliente(nome);
 
@@ -133,6 +160,10 @@ BEGIN
     WHERE cliente_id = cliente;
 END //
 DELIMITER ;
+
+-- 28. Atualiz o telefone do cliente com cliente_id = 1 para '1234-5678'
+
+CALL AtualizarTelefone(1, '1234-5678');
 
 -- 28. Funções Definidas pelo Usuário (UDF)
 DELIMITER //
