@@ -136,7 +136,6 @@ INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (2, 'André Rocha', '(81
 INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (3, 'Mannoel Filho', '(81) 965433218');
 INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (4, 'Carla Shutz', '(81) 987466216');
 
-
 -- 25. Índices
 CREATE INDEX idx_cliente_nome ON Cliente(nome);
 
