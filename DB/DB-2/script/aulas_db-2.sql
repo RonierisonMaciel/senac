@@ -139,67 +139,342 @@ INSERT INTO Cliente (cliente_id, nome, telefone) VALUES (4, 'Carla Shutz', '(81)
 -- 25. Índices
 CREATE INDEX idx_cliente_nome ON Cliente(nome);
 
+-- 26.1 Início Tiggers
+
+-- Tabela Cliente
+CREATE TABLE Cliente (
+    cliente_id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    telefone VARCHAR(20)
+);
+
+-- Tabela de Auditoria para armazenar logs de alterações
+CREATE TABLE auditoria_cliente (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT,
+    usuario VARCHAR(100),
+    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    campo_alterado VARCHAR(50),
+    valor_antigo VARCHAR(255),
+    valor_novo VARCHAR(255)
+);
+
 -- 26. Triggers
 DELIMITER //
-CREATE TRIGGER before_cliente_update
+
+CREATE TRIGGER antes_atualizacao_cliente
 BEFORE UPDATE ON Cliente
 FOR EACH ROW
 BEGIN
-    INSERT INTO auditoria_cliente (cliente_id, alteracao, data)
-    VALUES (OLD.cliente_id, 'Modificado', NOW());
+    -- Auditar alteração no campo "nome"
+    IF OLD.nome != NEW.nome THEN
+        INSERT INTO auditoria_cliente (cliente_id, usuario, campo_alterado, valor_antigo, valor_novo)
+        VALUES (OLD.cliente_id, USER(), 'nome', OLD.nome, NEW.nome);
+    END IF;
+
+    -- Auditar alteração no campo "telefone"
+    IF OLD.telefone != NEW.telefone THEN
+        INSERT INTO auditoria_cliente (cliente_id, usuario, campo_alterado, valor_antigo, valor_novo)
+        VALUES (OLD.cliente_id, USER(), 'telefone', OLD.telefone, NEW.telefone);
+    END IF;
 END //
+
 DELIMITER ;
 
--- 27. Stored Procedures
+-- Inserindo dados iniciais
+INSERT INTO Cliente (nome, telefone) VALUES ('João Silva', '9999-1234');
+
+-- Atualizando o telefone do cliente
+UPDATE Cliente SET telefone = '8888-4321' WHERE cliente_id = 1;
+
+SELECT * FROM auditoria_cliente WHERE cliente_id = 1;
+
+-- 26.2 Fim Triggers
+
+-- 27.1 Início Stored Procedures
+
+-- Tabela Cliente
+CREATE TABLE Cliente (
+    cliente_id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    telefone VARCHAR(20)
+);
+
+-- Tabela de Auditoria para registrar as alterações
+CREATE TABLE auditoria_cliente (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT,
+    usuario VARCHAR(100),
+    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    campo_alterado VARCHAR(50),
+    valor_antigo VARCHAR(255),
+    valor_novo VARCHAR(255)
+);
+
 DELIMITER //
-CREATE PROCEDURE AtualizarTelefone(IN cliente INT, IN novo_telefone VARCHAR(20))
+
+CREATE PROCEDURE AtualizarCliente(
+    IN p_cliente_id INT,
+    IN p_novo_nome VARCHAR(100),
+    IN p_novo_telefone VARCHAR(20)
+)
 BEGIN
+    DECLARE v_nome_atual VARCHAR(100);
+    DECLARE v_telefone_atual VARCHAR(20);
+
+    -- Buscar os valores atuais do cliente
+    SELECT nome, telefone INTO v_nome_atual, v_telefone_atual
+    FROM Cliente
+    WHERE cliente_id = p_cliente_id;
+
+    -- Comparar o nome e inserir auditoria se houver alteração
+    IF v_nome_atual != p_novo_nome THEN
+        INSERT INTO auditoria_cliente (cliente_id, usuario, campo_alterado, valor_antigo, valor_novo)
+        VALUES (p_cliente_id, USER(), 'nome', v_nome_atual, p_novo_nome);
+    END IF;
+
+    -- Comparar o telefone e inserir auditoria se houver alteração
+    IF v_telefone_atual != p_novo_telefone THEN
+        INSERT INTO auditoria_cliente (cliente_id, usuario, campo_alterado, valor_antigo, valor_novo)
+        VALUES (p_cliente_id, USER(), 'telefone', v_telefone_atual, p_novo_telefone);
+    END IF;
+
+    -- Atualizar os dados do cliente
     UPDATE Cliente
-    SET telefone = novo_telefone
-    WHERE cliente_id = cliente;
+    SET nome = p_novo_nome, telefone = p_novo_telefone
+    WHERE cliente_id = p_cliente_id;
+
 END //
+
 DELIMITER ;
 
--- 28. Atualiz o telefone do cliente com cliente_id = 1 para '1234-5678'
+-- Insere um novo cliente
+INSERT INTO Cliente (nome, telefone) VALUES ('João Silva', '9999-1234');
 
-CALL AtualizarTelefone(1, '1234-5678');
+-- Atualiza o nome e telefone do cliente
+CALL AtualizarCliente(1, 'João Silva', '8888-4321');
 
--- 28. Funções Definidas pelo Usuário (UDF)
+-- Exibe o log de auditoria
+SELECT * FROM auditoria_cliente WHERE cliente_id = 1;
+
+-- Atualiza o telefone do cliente
+CALL AtualizarCliente(1, 'João Pedro Silva', '8888-4321');
+
+-- Exibe o log de auditoria
+SELECT * FROM auditoria_cliente WHERE cliente_id = 1;
+
+-- 27.2 Fim Stored Procedures
+
+-- Início funções definidas pelo usuário (UDF)
+
+CREATE TABLE Cliente (
+    cliente_id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    data_nascimento DATE
+);
+
+-- Inserindo alguns dados de exemplo
+INSERT INTO Cliente (nome, data_nascimento) 
+VALUES ('João Silva', '1985-05-15'), 
+       ('Maria Oliveira', '1990-08-22'), 
+       ('Carlos Mendes', '2000-02-10');
+
 DELIMITER //
-CREATE FUNCTION CalcularAnosCadastro(data DATE)
+
+CREATE FUNCTION CalcularIdade(data_nascimento DATE)
 RETURNS INT
+DETERMINISTIC
 BEGIN
-    RETURN YEAR(CURDATE()) - YEAR(data);
+    -- Calcular a idade com base no ano atual menos o ano de nascimento
+    RETURN YEAR(CURDATE()) - YEAR(data_nascimento);
 END //
+
 DELIMITER ;
 
-SELECT nome, CalcularIdade(data_nascimento) AS idade FROM Cliente;
+-- Usando a função para calcular a idade dos clientes
+SELECT nome, CalcularIdade(data_nascimento) AS idade
+FROM Cliente;
 
--- 29. Views Complexas
-CREATE VIEW ClientesComEndereco AS
-SELECT c.nome, e.rua, e.cidade, e.estado
-FROM Cliente c
-JOIN Endereco e ON c.endereco_id = e.id;
+-- Filtrando clientes com mais de 30 anos
+SELECT nome, CalcularIdade(data_nascimento) AS idade
+FROM Cliente
+WHERE CalcularIdade(data_nascimento) > 30;
 
--- 30. Particionamento de Tabelas
-CREATE TABLE Historico_Vendas (
-    id INT,
+-- Ordenando os clientes por idade decrescente
+SELECT nome, CalcularIdade(data_nascimento) AS idade
+FROM Cliente
+ORDER BY idade DESC;
+
+-- Excluindo a função definida pelo usuário
+DROP FUNCTION IF EXISTS CalcularIdade;
+
+-- Fim funções definidas pelo usuário
+
+-- Início Views Complexas
+
+-- Tabela Cliente
+CREATE TABLE Cliente (
+    cliente_id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100)
+);
+
+-- Tabela Produto
+CREATE TABLE Produto (
+    produto_id INT PRIMARY KEY AUTO_INCREMENT,
+    nome_produto VARCHAR(100),
+    preco DECIMAL(10,2)
+);
+
+-- Tabela Pedido
+CREATE TABLE Pedido (
+    pedido_id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT,
+    data_pedido DATE,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(cliente_id)
+);
+
+-- Tabela PedidoProduto
+CREATE TABLE PedidoProduto (
+    pedido_id INT,
+    produto_id INT,
+    quantidade INT,
+    FOREIGN KEY (pedido_id) REFERENCES Pedido(pedido_id),
+    FOREIGN KEY (produto_id) REFERENCES Produto(produto_id)
+);
+
+-- Inserindo clientes
+INSERT INTO Cliente (nome, email) 
+VALUES ('João Silva', 'joao@email.com'),
+       ('Maria Oliveira', 'maria@email.com');
+
+-- Inserindo produtos
+INSERT INTO Produto (nome_produto, preco) 
+VALUES ('Notebook', 2000.00),
+       ('Mouse', 50.00),
+       ('Teclado', 100.00);
+
+-- Inserindo pedidos
+INSERT INTO Pedido (cliente_id, data_pedido) 
+VALUES (1, '2024-09-01'), 
+       (2, '2024-09-02');
+
+-- Inserindo itens dos pedidos
+INSERT INTO PedidoProduto (pedido_id, produto_id, quantidade)
+VALUES (1, 1, 1),  -- João comprou 1 Notebook
+       (1, 2, 2),  -- João comprou 2 Mouses
+       (2, 3, 1);  -- Maria comprou 1 Teclado
+
+-- Criando uma view para exibir os pedidos dos clientes com os produtos
+CREATE VIEW view_pedidos_clientes_produtos AS
+SELECT 
+    c.nome AS nome_cliente,
+    c.email,
+    p.pedido_id,
+    p.data_pedido,
+    pr.nome_produto,
+    pp.quantidade,
+    pr.preco,
+    (pp.quantidade * pr.preco) AS valor_total
+FROM 
+    Cliente c
+JOIN 
+    Pedido p ON c.cliente_id = p.cliente_id
+JOIN 
+    PedidoProduto pp ON p.pedido_id = pp.pedido_id
+JOIN 
+    Produto pr ON pp.produto_id = pr.produto_id;
+
+-- Consultando a view
+SELECT * FROM view_pedidos_clientes_produtos;
+
+-- Consultando os pedidos de um cliente específico
+SELECT * FROM view_pedidos_clientes_produtos
+WHERE nome_cliente = 'João Silva';
+
+-- Consultando os produtos comprados em um pedido específico
+SELECT nome_produto, quantidade, valor_total 
+FROM view_pedidos_clientes_produtos 
+WHERE pedido_id = 1;
+
+-- Modificando e atualizando a view
+CREATE OR REPLACE VIEW view_pedidos_clientes_produtos AS
+SELECT 
+    c.nome AS nome_cliente,
+    c.email,
+    p.pedido_id,
+    p.data_pedido,
+    pr.nome_produto,
+    pp.quantidade,
+    pr.preco,
+    (pp.quantidade * pr.preco) AS valor_total,
+    p.data_pedido + INTERVAL 7 DAY AS prazo_entrega
+FROM 
+    Cliente c
+JOIN 
+    Pedido p ON c.cliente_id = p.cliente_id
+JOIN 
+    PedidoProduto pp ON p.pedido_id = pp.pedido_id
+JOIN 
+    Produto pr ON pp.produto_id = pr.produto_id;
+
+-- Fim Views Complex
+
+-- 30. Início Particionamento de Tabelas
+
+-- Tabela de Vendas
+CREATE TABLE HistoricoVendas (
+    id INT PRIMARY KEY AUTO_INCREMENT,
     data_venda DATE,
-    valor DECIMAL(10,2)
+    valor DECIMAL(10, 2)
 )
 PARTITION BY RANGE (YEAR(data_venda)) (
     PARTITION p2019 VALUES LESS THAN (2020),
     PARTITION p2020 VALUES LESS THAN (2021),
-    PARTITION p2021 VALUES LESS THAN (2022)
+    PARTITION p2021 VALUES LESS THAN (2022),
+    PARTITION p2022 VALUES LESS THAN (2023),
+    PARTITION p2023 VALUES LESS THAN (2024)
 );
 
--- 31. InnoDB e Suporte a Transações
-START TRANSACTION;
-UPDATE Cliente SET nome = 'Maria Silva' WHERE cliente_id = 1;
-DELETE FROM Endereco WHERE id = 5;
-ROLLBACK;
+-- Inserindo dados de vendas
+INSERT INTO HistoricoVendas (data_venda, valor) 
+VALUES 
+('2019-05-15', 150.00), 
+('2020-06-20', 200.00),
+('2021-07-10', 300.00),
+('2022-08-22', 400.00),
+('2023-09-01', 500.00);
 
--- 32. Criação da Tabela Funcionarios
+-- Consultando as vendas de 2021
+SELECT * FROM HistoricoVendas 
+WHERE YEAR(data_venda) = 2021;
+
+-- Consultando as vendas de 2022
+SELECT * FROM HistoricoVendas 
+WHERE YEAR(data_venda) = 2022;
+
+-- Verificando as partições
+SHOW TABLE STATUS LIKE 'HistoricoVendas';
+
+-- Verificar especificamente as partições da tabela HistoricoVendas
+SHOW CREATE TABLE HistoricoVendas;
+
+-- Expandindo partições para anos futuros
+ALTER TABLE HistoricoVendas
+ADD PARTITION (
+    PARTITION p2024 VALUES LESS THAN (2025)
+);
+
+-- Removendo partições antigas
+ALTER TABLE HistoricoVendas
+DROP PARTITION p2019, p2020;
+
+-- Combinando partições com índices
+CREATE INDEX idx_data_venda ON HistoricoVendas(data_venda);
+
+-- Fim Particionamento de Tabelas
+
+-- 31. Criação da Tabela Funcionarios
 CREATE TABLE Funcionarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
@@ -215,7 +490,7 @@ INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Carlos', 1);  -- Carlos 
 INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Ana', 2);     -- Ana reporta a Maria
 INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Paulo', 3);   -- Paulo reporta a Carlos
 
--- 33. CTEs e Consultas Recursivas (MySQL 8.0+ necessário)
+-- 32. CTEs e Consultas Recursivas (MySQL 8.0+ necessário)
 WITH RECURSIVE Hierarquia AS (
     SELECT id, nome, supervisor_id
     FROM Funcionarios
@@ -227,6 +502,53 @@ WITH RECURSIVE Hierarquia AS (
 )
 SELECT * FROM Hierarquia;
 
--- 34. Full-Text Search
-CREATE FULLTEXT INDEX idx_texto ON artigos(conteudo);
-SELECT * FROM artigos WHERE MATCH(conteudo) AGAINST('palavras chave');
+-- 33. Full-Text Search
+
+-- Tabela Artigos
+CREATE TABLE Artigos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(255),
+    conteudo TEXT,
+    FULLTEXT (titulo, conteudo)
+) ENGINE=InnoDB;
+
+-- Inserindo alguns artigos
+INSERT INTO Artigos (titulo, conteudo) 
+VALUES 
+('Introdução ao MySQL', 'MySQL é um sistema de gerenciamento de banco de dados relacional.'),
+('Vantagens do MySQL', 'MySQL é um dos bancos de dados mais populares, conhecido por sua eficiência e escalabilidade.'),
+('Full-Text Search no MySQL', 'Este artigo explica como utilizar a funcionalidade Full-Text Search no MySQL para buscas eficientes.'),
+('Aprendizado de Máquina', 'Técnicas de aprendizado de máquina têm se tornado cada vez mais populares em diversas áreas.'),
+('Python para Data Science', 'Python é uma das linguagens mais populares para análise de dados e ciência de dados.');
+
+-- Consulta Full-Text Search
+SELECT titulo, conteudo 
+FROM Artigos
+WHERE MATCH(titulo, conteudo) AGAINST('MySQL');
+
+-- Consulta por "aprendizado"
+SELECT titulo, conteudo 
+FROM Artigos
+WHERE MATCH(titulo, conteudo) AGAINST('aprendizado');
+
+-- Consulta por "MySQL eficiência"
+SELECT titulo, conteudo 
+FROM Artigos
+WHERE MATCH(titulo, conteudo) AGAINST('MySQL eficiência');
+
+-- Consulta em modo booleano
+SELECT titulo, conteudo 
+FROM Artigos
+WHERE MATCH(titulo, conteudo) AGAINST('MySQL -eficiência' IN BOOLEAN MODE);
+
+-- Consulta artigos que devem conter "MySQL" e podem conter "bancos"
+SELECT titulo, conteudo 
+FROM Artigos
+WHERE MATCH(titulo, conteudo) AGAINST('+MySQL bancos' IN BOOLEAN MODE);
+
+-- Consulta com relevância
+SELECT titulo, conteudo, 
+MATCH(titulo, conteudo) AGAINST('MySQL') AS relevancia
+FROM Artigos
+WHERE MATCH(titulo, conteudo) AGAINST('MySQL')
+ORDER BY relevancia DESC;
