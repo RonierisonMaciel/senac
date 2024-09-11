@@ -174,6 +174,8 @@ BEGIN
 END //
 DELIMITER ;
 
+SELECT nome, CalcularIdade(data_nascimento) AS idade FROM Cliente;
+
 -- 29. Views Complexas
 CREATE VIEW ClientesComEndereco AS
 SELECT c.nome, e.rua, e.cidade, e.estado
@@ -198,18 +200,34 @@ UPDATE Cliente SET nome = 'Maria Silva' WHERE cliente_id = 1;
 DELETE FROM Endereco WHERE id = 5;
 ROLLBACK;
 
--- 32. CTEs e Consultas Recursivas (MySQL 8.0+ necessário)
+-- 32. Criação da Tabela Funcionarios
+CREATE TABLE Funcionarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    supervisor_id INT,
+    FOREIGN KEY (supervisor_id) REFERENCES Funcionarios(id)
+);
+
+INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('João', NULL); -- João é o CEO, sem supervisor
+
+INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Maria', 1);   -- Maria reporta a João
+INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Carlos', 1);  -- Carlos reporta a João
+
+INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Ana', 2);     -- Ana reporta a Maria
+INSERT INTO Funcionarios (nome, supervisor_id) VALUES ('Paulo', 3);   -- Paulo reporta a Carlos
+
+-- 33. CTEs e Consultas Recursivas (MySQL 8.0+ necessário)
 WITH RECURSIVE Hierarquia AS (
     SELECT id, nome, supervisor_id
     FROM Funcionarios
-    WHERE supervisor_id IS NULL
+    WHERE supervisor_id IS NULL  -- Seleciona o nível mais alto da hierarquia (ex: João)
     UNION
     SELECT f.id, f.nome, f.supervisor_id
     FROM Funcionarios f
-    INNER JOIN Hierarquia h ON f.supervisor_id = h.id
+    INNER JOIN Hierarquia h ON f.supervisor_id = h.id  -- Encontra os subordinados
 )
 SELECT * FROM Hierarquia;
 
--- 33. Full-Text Search
+-- 34. Full-Text Search
 CREATE FULLTEXT INDEX idx_texto ON artigos(conteudo);
 SELECT * FROM artigos WHERE MATCH(conteudo) AGAINST('palavras chave');
