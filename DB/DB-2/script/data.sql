@@ -9,7 +9,7 @@ INSERT INTO Usuarios (nome, email, data_registro, pais) VALUES
 ('Ricardo Souza', 'ricardo.souza@example.com', '2023-02-13', 'Portugal'),
 ('Mariana Gomes', 'mariana.gomes@mail.com', '2023-09-14', 'Cabo Verde'),
 ('Paulo Lima', 'paulo.lima@mail.com', '2023-08-31', 'Brasil'),
-('Carlos Costa', 'carlos.costa@email.com', '2023-07-21', 'Brasil'),
+('Carlos Maciel', 'carlos.maciel@email.com', '2023-07-21', 'Brasil'),
 ('Beatriz Costa', 'beatriz.costa@example.com', '2023-05-18', 'Portugal'),
 ('Beatriz Santos', 'beatriz.santos@email.com', '2023-04-12', 'Brasil'),
 ('Beatriz Silva', 'beatriz.silva@email.com', '2023-03-05', 'Portugal'),
