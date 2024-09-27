@@ -2,11 +2,15 @@
 CREATE DATABASE IF NOT EXISTS db_aula_1;
 USE db_aula_1;
 
+-- Criação da tabela departamentos
 CREATE TABLE departamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100)
+    nome VARCHAR(100),
+    bloco VARCHAR(100),
+    data_criacao DATE
 );
 
+-- Criação da tabela empregados
 CREATE TABLE empregados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
