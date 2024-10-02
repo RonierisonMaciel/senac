@@ -55,3 +55,45 @@ COMMIT;
 
 -- Em caso de erro, poderíamos usar ROLLBACK para desfazer as mudanças
 -- ROLLBACK;
+
+-- Funções agregadoras MySQL
+
+-- Usando COUNT(*) para contar o número de linhas
+SELECT id_departamento, COUNT(*) AS pessoas_departamentos
+FROM empregados
+GROUP BY id_departamento;
+
+-- Contar o total de empregados
+SELECT COUNT(*) FROM empregados;
+
+-- AVG retorna o valor médio dos salários por departamento
+SELECT id_departamento, AVG(salario) AS salario_medio
+FROM empregados
+GROUP BY id_departamento;
+
+-- Valor médio dos salários de todos os empregados
+SELECT AVG(salario) FROM empregados;
+
+-- Maior salário dos empregados por departamento
+SELECT id_departamento, MAX(salario) AS maiores_salarios
+FROM empregados
+GROUP BY id_departamento;
+
+-- Maior salário de todos os empregados
+SELECT MAX(salario) FROM empregados;
+
+-- Menor salário dos empregados por departamento
+SELECT id_departamento, MIN(salario) AS menores_salarios
+FROM empregados
+GROUP BY id_departamento;
+
+-- Menor Salário de todos os empregados
+SELECT MIN(salario) FROM empregados;
+
+-- Retorna a soma dos salários das linhas do sa
+SELECT id_departamento, SUM(salario) AS soma_salarios
+FROM empregados
+GROUP BY id_departamento;
+
+-- Soma de todos os salários dos empregados
+SELECT SUM(salario) FROM empregados;
