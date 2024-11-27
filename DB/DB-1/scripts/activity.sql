@@ -140,3 +140,21 @@ CALL GerarDados();
 
 -- Remover o procedimento se não for mais necessário
 DROP PROCEDURE GerarDados;
+
+-- Criação do índice e consulta de exemplo
+CREATE INDEX idx_coluna ON Produtos(preco);
+
+-- Consulta de Produtos com preço entre 100 e 200
+SELECT * FROM Produtos WHERE preco BETWEEN 100 AND 200;
+
+-- Medir o tempo de execução da consulta
+EXPLAIN SELECT * FROM Produtos WHERE preco BETWEEN 100 AND 200;
+
+-- Consulta de Produtos com preço entre 100 e 200 e tempo de execução
+SET @inicio = NOW();
+SELECT * FROM Produtos WHERE preco BETWEEN 100 AND 200;
+SET @fim = NOW();
+SELECT TIMEDIFF(@fim, @inicio) AS tempo__de_execucao;
+
+-- Remover o índice
+DROP INDEX idx_coluna ON tabela;
