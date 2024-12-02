@@ -241,4 +241,4 @@ Melhorar o design e a usabilidade da aplicação utilizando o pacote `django-boo
 
 ### Próximos passos 🚀
 
-[👉 Continue para o próximo material!](https://github.com/Dev-UniRios/Python-Django-Course/blob/main/Django/6%C2%BA%20-%20etapa.md)
+[👉 Continue para o próximo material!](https://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/6%C2%BA%20-%20etapa.md)
