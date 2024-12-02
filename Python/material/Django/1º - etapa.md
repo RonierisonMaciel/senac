@@ -107,4 +107,4 @@ Criar uma página HTML simples usando Django, que simule uma lista de tarefas se
 
 ### Próximos passos 🚀
 
-[👉 Continue para o próximo material!](https://github.com/senac/Django/blob/main/Django/2%C2%BA%20-%20etapa.md)
+[👉 Continue para o próximo material!](https://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/2%C2%BA%20-%20etapa.md)
