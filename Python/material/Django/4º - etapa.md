@@ -732,4 +732,4 @@ Organizar os arquivos estáticos (CSS, JavaScript e imagens) da aplicação e me
 
 ### Próximos passos 🚀
 
-[👉 Continue para o próximo material!](https://github.com/Dev-UniRios/Python-Django-Course/blob/main/Django/5%C2%BA%20-%20etapa.md)
+[👉 Continue para o próximo material!](https://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/5%C2%BA%20-%20etapa.md)
