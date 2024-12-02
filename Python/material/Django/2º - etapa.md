@@ -137,4 +137,4 @@ Criar uma aplicação de lista de tarefas em Django, permitindo que os usuários
 
 ### Próximos passos 🚀
 
-[👉 Continue para o próximo material!](hhttps://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/3%C2%BA%20-%20etapa.md)
+[👉 Continue para o próximo material!](https://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/3%C2%BA%20-%20etapa.md)
