@@ -247,4 +247,4 @@ Adicionar a funcionalidade de upload de imagens às tarefas utilizando o pacote 
 
 ### Próximos passos 🚀
 
-[👉 Continue para o próximo material!](https://github.com/Dev-UniRios/Python-Django-Course/blob/main/Django/7%C2%BA%20-%20etapa.md)
+[👉 Continue para o próximo material!](https://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/7%C2%BA%20-%20etapa.md)
