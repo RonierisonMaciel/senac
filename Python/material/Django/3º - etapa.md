@@ -266,4 +266,4 @@ Permitir que os usuários marquem tarefas como concluídas, excluam-nas e editem
 
 ### Próximos passos 🚀
 
-[👉 Continue para o próximo material!](https://github.com/senac/Django/blob/main/Django/4%C2%BA%20-%20etapa.md)
+[👉 Continue para o próximo material!](https://github.com/RonierisonMaciel/senac/blob/main/Python/material/Django/4%C2%BA%20-%20etapa.md)
