@@ -17,8 +17,8 @@ Este repositório contém materiais e scripts para auxiliar no aprendizado e na 
 │   ├── aula5.md        # Trabalhando com Arquivos no Node.js
 │   ├── aula6.md        # Middlewares e Tratamento de Erros no Express.js
 │   ├── aula7.md        # Conectando Node.js a um Banco de Dados (SQLite ou MongoDB)
-│   ├── aula8.md        # Deploy no AWS Elastic Beanstalk e Boas Práticas
-│   ├── aula9.md        # Revisão Geral e Projeto Final
+│   ├── aula8.md        # Projeto Final - Full Stack com Node.js, React e MongoDB
+│   ├── aula9.md        # Deploy Completo do Projeto Full Stack na AWS
 │
 ├── 📁 scripts           # Códigos utilizados no curso
 │   ├── index.js        # Código base para deploy na AWS
