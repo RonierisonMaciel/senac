@@ -288,4 +288,6 @@ app.delete('/task/:id', (req, res) => {
 
 ## **Conclusão**
 
-Parabéns! Nesta aula, você aprendeu a usar o módulo `fs` para criar uma API com persistência de dados em arquivos. Este é um passo importante para entender como trabalhar com dados em aplicações Node.js.
+Parabéns! Nesta aula, você aprendeu a usar:
+- Módulo `fs` para criar uma API com persistência de dados em arquivos. 
+- Este é um passo importante para entender como trabalhar com dados em aplicações Node.js.
