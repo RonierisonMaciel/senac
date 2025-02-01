@@ -292,5 +292,5 @@ MONGO_URI=mongodb+srv://SEU_USUARIO:SUA_SENHA@SEU_CLUSTER.mongodb.net/filmesDB?r
 
 ## **🎯 Conclusão**
 Agora temos um projeto **Full Stack** com:
-✅ **Back-end Node.js + MongoDB no AWS Elastic Beanstalk**  
-✅ **Front-end React rodando no AWS EC2 ou Vercel**  
+- ✅ **Back-end Node.js + MongoDB no AWS Elastic Beanstalk**  
+- ✅ **Front-end React rodando no AWS EC2 ou Vercel**  
