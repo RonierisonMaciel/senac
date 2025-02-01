@@ -278,4 +278,7 @@ module.exports = router;
 
 ## **Conclusão**
 
-Nesta aula, você aprendeu a conectar o Node.js a um banco de dados (SQLite ou MongoDB), implementar um CRUD persistente e integrar o banco ao Express.js. Agora você pode armazenar e manipular dados de maneira persistente!
+Nesta aula, você aprendeu:
+- Conectar o Node.js a um banco de dados (SQLite ou MongoDB)
+- Implementar um CRUD persistente e integrar o banco ao Express.js.
+- Agora você pode armazenar e manipular dados de maneira persistente!
