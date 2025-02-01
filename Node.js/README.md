@@ -18,7 +18,7 @@ Este repositório contém materiais e scripts para auxiliar no aprendizado e na 
 │   ├── aula6.md        # Middlewares e Tratamento de Erros no Express.js
 │   ├── aula7.md        # Conectando Node.js a um Banco de Dados (SQLite ou MongoDB)
 │   ├── aula8.md        # Projeto Final - Full Stack com Node.js, React e MongoDB
-│   ├── aula9.md        # Deploy Completo do Projeto Full Stack na AWS
+│   ├── aula9.md        # Deploy Completo do Projeto Full Stack no AWS (Upload do App JS via EC2)
 │
 ├── 📁 scripts           # Códigos utilizados no curso
 │   ├── index.js        # Código base para deploy na AWS
@@ -43,15 +43,25 @@ Utilizados para rodar a aplicação e gerenciar pacotes.
   npm -v
   ```
 
-### 2️⃣ **Visual Studio Code (VS Code)**  
-Editor de código recomendado para desenvolvimento.  
+### 2️⃣ **Visual Studio Code (VS Code)**
+Editor de código recomendado para desenvolvimento.
 
-- 🔗 [Download VS Code](https://code.visualstudio.com/)  
+- 🔗 [Download VS Code](https://code.visualstudio.com/)
 
-### 3️⃣ **Postman**  
-Ferramenta para testar APIs de forma simples e interativa.  
+### 3️⃣ **Postman**
+Ferramenta para testar APIs de forma simples e interativa.
 
-- 🔗 [Download Postman](https://www.postman.com/downloads/)  
+- 🔗 [Download Postman](https://www.postman.com/downloads/)
+
+### 4️⃣ **MongoDB**
+Ferramenta de banco de dados NoSQL, simples e escalável, que armazena dados em documentos JSON.
+
+- 🔗 [Download MongoDB](https://www.mongodb.com/try/download/community)
+
+### 5️⃣ **MongoDB Clusters**
+Servidores interconectados para garantir escalabilidade, alta disponibilidade e distribuição de dados.
+
+- 🔗 [Login](https://account.mongodb.com/account/login)
 
 ---
 
